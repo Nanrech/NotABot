@@ -41,7 +41,6 @@ class Misc(interactions.Extension):
                                     description="Shows all the emoji in this server",
                                     scope=SCOPE)
     async def i_misc_emoji_list(self, ctx: interactions.CommandContext):
-        await ctx.defer()
         with open("cache/emoji.json", "r") as f:
             json_data = json.load(f)
 
@@ -122,6 +121,19 @@ class Misc(interactions.Extension):
                 raw['guild']['icon'] else "https://http.cat/204")
         await ctx.send(embeds=embed)
 
+    @interactions.extension_command(name="show-permissions",
+                                    description="N/A",
+                                    scope=SCOPE,
+                                    options=[
+                                        interactions.Option(
+                                            type=interactions.OptionType.USER,
+                                            name="user",
+                                            description="N/A",
+                                            required=False
+                                        )
+                                    ])
+    async def i_misc_whois(self, ctx: interactions.CommandContext, user: interactions.Member = None):
+        ...
 
 def setup(client):
     Misc(client)

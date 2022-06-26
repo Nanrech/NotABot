@@ -1,0 +1,11 @@
+{
+  "token": "not happening today!",
+  "guildID": [749015533310967828],
+  "ownerID": 452954731162238987,
+  "prefix": ["!"],
+  "important_channels": {
+    "announcements": 870068837905727488,
+    "logs": "NaN",
+    "bots_allowed": [780425054080729130, 870069154017861642]
+  }
+}

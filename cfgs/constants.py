@@ -1,10 +1,15 @@
 import json
+
 from pathlib import Path
+from os import getenv
+from dotenv import load_dotenv
 
 with open(Path("cfgs/config.json").absolute(), "r") as f:
     _json = json.load(f)
 
-BOT_TOKEN = _json.get("token")
+load_dotenv()
+# BOT_TOKEN = _json.get("token")
+BOT_TOKEN = getenv("__BOT_TOKEN_VERY_PRIVATE")
 PREFIX = _json.get("prefix")
 ADMIN = _json.get("ownerID")
 SCOPE = _json.get("guildID")

@@ -1,2 +1,1 @@
-python-3.10
 discord-py-interactions>=4.2.0

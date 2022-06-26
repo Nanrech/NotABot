@@ -4,7 +4,7 @@ import logging
 from cfgs.funcs import current_time
 from cfgs.constants import BOT_TOKEN, SCOPE, N_GUILDS
 
-logging.basicConfig(level=logging.DEBUG)
+# logging.basicConfig(level=logging.DEBUG)
 client = interactions.Client(token=BOT_TOKEN,
                              disable_sync=True)
 

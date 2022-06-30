@@ -1,8 +1,7 @@
 import interactions
 
 from random import choices, choice as random_choice
-from cfgs.constants import SCOPE
-from cfgs.funcs import rps_get_winner, rps_get_weights
+from utils.funcs import rps_get_winner, rps_get_weights
 
 
 class Fun(interactions.Extension):
@@ -14,9 +13,9 @@ class Fun(interactions.Extension):
             "s": "scissors :v:"
         }
 
+    # NOTE The rock-paper-scissors minigame is "rigged". Look at funcs.rps_get_weighs for more info
     @interactions.extension_command(name="rock-paper-scissors",
                                     description="Play a round of rock paper scissors against the bot",
-                                    scope=SCOPE,
                                     options=[
                                         interactions.Option(
                                             type=interactions.OptionType.STRING,
@@ -40,30 +39,29 @@ class Fun(interactions.Extension):
                                         )
                                     ]
                                     )
-    async def i_fun_rock_paper_scissors(self, ctx: interactions.CommandContext, choice):
+    async def i_fun_rock_paper_scissors(self, ctx: interactions.CommandContext, choice: str):
         weights = rps_get_weights(choice)
         user_choice = self.rps.get(choice)
         choice_b = choices(list(self.rps.keys()), weights=weights)[0]
         bot_choice = self.rps.get(choice_b).replace("right", "left")
-        win_state = rps_get_winner(a_choice=choice, b_choice=choice_b)
+        win_state = rps_get_winner(choice, choice_b)
         return await ctx.send(f"• You chose {user_choice}\n• I chose {bot_choice} \n> **`You {win_state}`**",
                               ephemeral=False)
 
     @interactions.extension_command(name="flip-coin",
                                     description="Flips a coin",
-                                    scope=SCOPE,
                                     options=[
                                         interactions.Option(
                                             type=interactions.OptionType.STRING,
                                             required=False,
                                             name="heads",
-                                            description="Defaults to 'heads'. Optional alternate name for the first coinflip option."
+                                            description="Defaults to 'heads'. Optional alternative name for the first coinflip option."
                                         ),
                                         interactions.Option(
                                             type=interactions.OptionType.STRING,
                                             required=False,
                                             name="tails",
-                                            description="Defaults to 'tails'. Optional alternate name for the second coinflip option."
+                                            description="Defaults to 'tails'. Optional alternative name for the second coinflip option."
                                         )
                                     ])
     async def i_fun_flip(self,

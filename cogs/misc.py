@@ -1,10 +1,10 @@
 import interactions
 import re
 import aiohttp
-import json
 
-from cfgs.constants import SCOPE, BRANDING_COLOUR
-from cfgs.funcs import misc_get_chan_type
+from utils.cache import cache
+from utils.constants import BRANDING_COLOUR
+from utils.funcs import misc_get_chan_type, misc_all_perms
 
 session = aiohttp.ClientSession()
 
@@ -14,9 +14,8 @@ class Misc(interactions.Extension):
         self.client = client
         self.session = session
 
-    @interactions.extension_command(name="show-avatar",
+    @interactions.extension_command(name="avatar",
                                     description="Returns an embed containing a user's avatar",
-                                    scope=SCOPE,
                                     options=[
                                         interactions.Option(
                                             type=interactions.OptionType.USER,
@@ -26,36 +25,16 @@ class Misc(interactions.Extension):
                                         )
                                     ])
     async def i_misc_get_avatar(self, ctx: interactions.CommandContext, user: interactions.Member = None):
-        url = ctx.author.user.avatar_url if user is None else user.user.avatar_url
+        url = ctx.author.user.avatar_url if user is None else user.user.avatar_url or "https://http.cat/204"
         await ctx.send(f"{url} ** **")
 
-    @interactions.extension_listener(name="on_guild_emojis_update")
-    async def misc_emoji_cache_updater(self, payload: interactions.GuildEmojis):
-        with open("cache/emoji.json", "r") as f:
-            raw = json.load(f)
-            raw[str(payload.guild_id)] = payload._json.get("emojis")
-        with open("cache/emoji.json", "w") as f:
-            json.dump(raw, f)
-
     @interactions.extension_command(name="emoji",
-                                    description="Shows all the emoji in this server",
-                                    scope=SCOPE)
+                                    description="Shows all the emoji in this server",)
     async def i_misc_emoji_list(self, ctx: interactions.CommandContext):
-        with open("cache/emoji.json", "r") as f:
-            json_data = json.load(f)
-
-            if str(ctx.guild_id) in json_data.keys():
-                emoji_list = json_data.get(f"{ctx.guild_id}")
-
-            else:
-                emoji_list = await self.client._http.get_all_emoji(int(ctx.guild_id))
-                json_data[str(ctx.guild_id)] = emoji_list
-
-        with open("cache/emoji.json", "w") as f:
-            json.dump(json_data, f)
-
-        print(emoji_list)
-        print(json_data)
+        emoji_list = cache.get_cached_emojis(ctx.guild_id)
+        if not emoji_list:
+            cache.cache_emojis(guild_id=ctx.guild_id, contents=(await ctx.get_guild()).emojis)
+            emoji_list = cache.emojis.get(ctx.guild_id)
         await ctx.send(embeds=interactions.Embed(
             title=f"Showing a total of {len(emoji_list)} emojis",
             description=f"""{' '.join([f'<{"a" if emoji.get("animated") else ""}:{emoji.get("name")}:{emoji.get("id")}>' for emoji in emoji_list])}""",
@@ -64,7 +43,6 @@ class Misc(interactions.Extension):
 
     @interactions.extension_command(name="invite-info",
                                     description="Returns some info about an invite",
-                                    scope=SCOPE,
                                     options=[
                                         interactions.Option(
                                             type=interactions.OptionType.STRING,
@@ -112,18 +90,17 @@ class Misc(interactions.Extension):
                     ),
                     interactions.EmbedField(
                         name="**Server Description**",
-                        value=raw['guild']['description'] or "[No description found](https://http.cat/404)"
+                        value=raw['guild']['description'] or "[No description](https://http.cat/204)"
                     )
                 ]
             )
             embed.set_thumbnail(
                 url=f"https://cdn.discordapp.com/icons/{raw['guild']['id']}/{raw['guild']['icon']}{'.gif' if '_a' in raw['guild']['icon'] else '.png'}" if
                 raw['guild']['icon'] else "https://http.cat/204")
-        await ctx.send(embeds=embed)
+        return await ctx.send(embeds=embed)
 
-    @interactions.extension_command(name="show-permissions",
-                                    description="N/A",
-                                    scope=SCOPE,
+    @interactions.extension_command(name="who-is",
+                                    description="Shows some info on a member. Doesn't support IDs yet.",
                                     options=[
                                         interactions.Option(
                                             type=interactions.OptionType.USER,
@@ -133,7 +110,33 @@ class Misc(interactions.Extension):
                                         )
                                     ])
     async def i_misc_whois(self, ctx: interactions.CommandContext, user: interactions.Member = None):
-        ...
+        user = user or ctx.author
+        user_embed = interactions.Embed(
+            title=f"{user.user.username}#{user.user.discriminator} ({user.id})",
+            description=f"Created: <t:{user.id.epoch}:R> \nJoined <t:{int(user.joined_at.timestamp())}:R>",
+            thumbnail=interactions.EmbedImageStruct(
+                url=user.user.avatar_url or "https://http.cat/204"
+            ),
+            color=BRANDING_COLOUR,
+            fields=[
+                interactions.EmbedField(
+                    name="Nickname",
+                    value=f"{'`No`' if not user.nick else user.nick}",
+                    inline=True
+                ),
+                interactions.EmbedField(
+                    name=f"Roles: {len(user.roles)}",
+                    value=f"{''.join([f'<@&{role}>' for role in user.roles]) if user.roles else 'null'}",
+                    inline=True
+                ),
+                interactions.EmbedField(
+                    name="Permissions",
+                    value=", ".join(misc_all_perms(int(user.permissions))) + "** **"
+                )
+            ]
+        )
+        return await ctx.send(embeds=user_embed)
+
 
 def setup(client):
     Misc(client)

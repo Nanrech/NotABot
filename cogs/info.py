@@ -1,6 +1,6 @@
 import interactions
 
-from cfgs.constants import SCOPE, BRANDING_COLOUR
+from utils.constants import BRANDING_COLOUR
 
 
 class Info(interactions.Extension):
@@ -14,20 +14,19 @@ class Info(interactions.Extension):
             ),
             fields=[
                 interactions.EmbedField(
-                    name="info",
+                    name="General info",
                     value="To be filled at a later date..."
                 )
             ]
         )
 
-    @interactions.extension_command(name="bot-info",
-                                    description="Returns some info about this bot",
-                                    scope=SCOPE)
+    @interactions.extension_command(name="info",
+                                    description="Returns some info about this bot",)
     async def i_info_bot_info(self, ctx: interactions.CommandContext):
+        await ctx.send("Look at DMs!", ephemeral=True)
         final_embed = self.info_embed
         final_embed.description = f"Message sent from {(await ctx.get_guild()).name} ({ctx.guild_id})"
-        await ctx.author.send(embeds=final_embed)
-        await ctx.send("<:join:879339696650600470> Look at DMs", ephemeral=True)
+        return await ctx.author.send(embeds=final_embed)
 
 
 def setup(client):

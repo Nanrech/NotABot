@@ -6,7 +6,7 @@ from utils.constants import BOT_TOKEN
 from utils.cache import cache
 
 counter = 0
-logging.basicConfig(level=logging.DEBUG)
+# logging.basicConfig(level=logging.DEBUG)
 presence = interactions.ClientPresence(
     activities=[
         interactions.PresenceActivity(

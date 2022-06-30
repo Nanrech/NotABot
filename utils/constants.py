@@ -10,9 +10,7 @@ with open(Path("utils/config.json").absolute(), "r") as f:
 load_dotenv()
 
 counter = 0  # Super important variable. Do not lose.
-BOT_TOKEN = _json.get("token")
-if not BOT_TOKEN:
-    BOT_TOKEN = getenv("__BOT_TOKEN_VERY_PRIVATE")
+BOT_TOKEN = getenv("__BOT_TOKEN_VERY_PRIVATE")
 BRANDING_COLOUR = 0xf74949
 
 CHAN_TYPES: dict = {

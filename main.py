@@ -26,13 +26,14 @@ async def on_ready():
         counter += 1
     else:
         cache.cache_last_ready()
+    cache.wipe_cached_emojis()
     print(f"{current_time()} Logged in as {client.me.name}, latency: {int(client.latency)}.")
 
 
 @client.command(name="ping", description="Checks if the bot is alive", )
 async def i_main_ping(ctx: interactions.CommandContext):
     await ctx.send(
-        f"Latency: `{int(client.latency)}ms`. Deployed: <t:{cache.internal_first_ready}:R>, last registered reconnect: {f'<t:{cache.cache_last_ready()}:R>' if cache.internal_last_ready else '`null`'}.",
+        f"Latency: `{int(client.latency)}ms`. Deployed: <t:{cache.internal_first_ready}:R>, last registered reconnect: {f'<t:{cache.internal_last_ready}:R>' if cache.internal_last_ready else '`null`'}.",
         ephemeral=True)
 
 

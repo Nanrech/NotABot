@@ -56,6 +56,9 @@ class Misc(interactions.Extension):
         if "https://discord.gg/" in invite or "discord.gg/" in invite:
             code = invite.split(".gg/")[1]
 
+        if "https://discord.com/invite/" in invite:
+            code = invite.split("invite/")[1]
+
         if bool(re.search("[^a-zA-Z0-9-]", code)):
             return await ctx.send(embeds=interactions.Embed(
                 title="Invalid code",
@@ -99,7 +102,7 @@ class Misc(interactions.Extension):
                 raw['guild']['icon'] else "https://http.cat/204")
         return await ctx.send(embeds=embed)
 
-    @interactions.extension_command(name="who-is",
+    @interactions.extension_command(name="whois",
                                     description="Shows some info on a member. Doesn't support IDs yet.",
                                     options=[
                                         interactions.Option(
@@ -126,7 +129,7 @@ class Misc(interactions.Extension):
                 ),
                 interactions.EmbedField(
                     name=f"Roles: {len(user.roles)}",
-                    value=f"{''.join([f'<@&{role}>' for role in user.roles]) if user.roles else 'null'}",
+                    value=f"{''.join([f'<@&{role}>' for role in user.roles]) if len(user.roles) != 0 else '** **'}",
                     inline=True
                 ),
                 interactions.EmbedField(

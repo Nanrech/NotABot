@@ -37,6 +37,21 @@ class Cache:
         else:
             return self.emojis.get(guild_id)
 
+    def wipe_cached_emojis(self):
+        self.emojis = {}
+        with open("cache/emoji.json", "w") as f:
+            json.dump(self.emojis, f)
+
+    def wipe_cache(self):
+        self.emojis = {}
+        self.internal = {}
+        self.internal_last_ready = {}
+        self.internal_first_ready = {}
+        with open("cache/emoji.json", "w") as f:
+            json.dump(self.emojis, f)
+        with open("cache/internal.json", "w") as f:
+            json.dump(self.internal, f)
+
     def cache_first_ready(self):
         with open("cache/internal.json", "r") as f:
             internal = json.load(f)

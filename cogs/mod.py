@@ -1,8 +1,8 @@
 # HEAVILY WIP
 import interactions
 
-from utils.constants import SCOPE, BRANDING_COLOUR
-from utils.funcs import current_time, bot_has_perm
+from utils.constants import BRANDING_COLOUR
+from utils.funcs import current_time
 
 
 class Mod(interactions.Extension):
@@ -32,6 +32,9 @@ class Mod(interactions.Extension):
                                     ])
     async def i_mod_ban(self, ctx: interactions.CommandContext, target: interactions.Member, reason: str = None,
                         delete_message_days: int = 0):
+        if int(ctx.guild_id) != 749015533310967828:
+            return await ctx.send("Nope! This experiment hasn't been rolled out to your server yet. Wait a minute!",
+                                  ephemeral=True)
         if not bool(interactions.Permissions.BAN_MEMBERS & ctx.author.permissions) or not bool(
                 interactions.Permissions.ADMINISTRATOR & ctx.author.permissions
                 or not bool(interactions.Permissions.MODERATE_MEMBERS & ctx.author.permissions)):
@@ -73,6 +76,9 @@ class Mod(interactions.Extension):
                                         )
                                     ])
     async def i_mod_kick(self, ctx: interactions.CommandContext, target: interactions.Member, reason: str = None):
+        if int(ctx.guild_id) != 749015533310967828:
+            return await ctx.send("Nope! This experiment hasn't been rolled out to your server yet. Wait a minute!",
+                                  ephemeral=True)
         if not bool(interactions.Permissions.KICK_MEMBERS & ctx.author.permissions) or not bool(
                 interactions.Permissions.ADMINISTRATOR & ctx.author.permissions
                 or not bool(interactions.Permissions.MODERATE_MEMBERS & ctx.author.permissions)):
@@ -113,7 +119,9 @@ class Mod(interactions.Extension):
                                         )
                                     ])
     async def i_mod_mute(self, ctx: interactions.CommandContext, target: interactions.Member, duration):
-
+        if int(ctx.guild_id) != 749015533310967828:
+            return await ctx.send("Nope! This experiment hasn't been rolled out to your server yet. Wait a minute!",
+                                  ephemeral=True)
         if not bool(interactions.Permissions.MODERATE_MEMBERS & ctx.author.permissions) or not bool(
                 interactions.Permissions.ADMINISTRATOR & ctx.author.permissions):
             return await ctx.send(ephemeral=True,

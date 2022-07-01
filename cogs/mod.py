@@ -1,8 +1,8 @@
 # HEAVILY WIP
 import interactions
 
-from utils.constants import SCOPE, BRANDING_COLOUR
-from utils.funcs import current_time, bot_has_perm
+from utils.constants import BRANDING_COLOUR
+from utils.funcs import current_time
 
 
 class Mod(interactions.Extension):

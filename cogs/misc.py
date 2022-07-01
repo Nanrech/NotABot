@@ -56,6 +56,9 @@ class Misc(interactions.Extension):
         if "https://discord.gg/" in invite or "discord.gg/" in invite:
             code = invite.split(".gg/")[1]
 
+        if "https://discord.com/invite/" in invite:
+            code = invite.split("invite/")[1]
+
         if bool(re.search("[^a-zA-Z0-9-]", code)):
             return await ctx.send(embeds=interactions.Embed(
                 title="Invalid code",

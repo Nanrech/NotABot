@@ -15,7 +15,8 @@ presence = interactions.ClientPresence(
         )
     ])
 client = interactions.Client(token=BOT_TOKEN,
-                             disable_sync=False)
+                             disable_sync=False,
+                             _presence=presence)
 
 
 @client.event()
@@ -42,4 +43,5 @@ client.load("cogs.events")
 client.load("cogs.fun")
 client.load("cogs.info")
 client.load("cogs.misc")
+client.load("cogs.mod")
 client.start()

@@ -15,7 +15,8 @@ presence = interactions.ClientPresence(
         )
     ])
 client = interactions.Client(token=BOT_TOKEN,
-                             disable_sync=False)
+                             disable_sync=False,
+                             _presence=presence)
 
 
 @client.event()

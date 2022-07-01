@@ -99,7 +99,7 @@ class Misc(interactions.Extension):
                 raw['guild']['icon'] else "https://http.cat/204")
         return await ctx.send(embeds=embed)
 
-    @interactions.extension_command(name="who-is",
+    @interactions.extension_command(name="whois",
                                     description="Shows some info on a member. Doesn't support IDs yet.",
                                     options=[
                                         interactions.Option(

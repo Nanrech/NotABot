@@ -22,6 +22,7 @@ client = interactions.Client(token=BOT_TOKEN,
 async def on_ready():
     global counter
     if counter == 0:
+        cache.wipe_cache()
         cache.cache_first_ready()
         counter += 1
     else:

@@ -2,7 +2,7 @@
 import interactions
 
 from utils.constants import BRANDING_COLOUR
-from utils.funcs import current_time
+from utils.funcs import current_time, generate_audit_reason
 
 
 class Mod(interactions.Extension):
@@ -30,8 +30,11 @@ class Mod(interactions.Extension):
                                             description="How many days worth of target's messages are to be deleted. Defaults to 0"
                                         )
                                     ])
-    async def i_mod_ban(self, ctx: interactions.CommandContext, target: interactions.Member, reason: str = None,
-                        delete_message_days: int = 0):
+    async def i_mod_ban(self,
+                        ctx: interactions.CommandContext,
+                        target: interactions.Member,
+                        reason: str = None,
+                        delete_message_days: int = 7):
         if int(ctx.guild_id) != 749015533310967828:
             return await ctx.send("Nope! This experiment hasn't been rolled out to your server yet. Wait a minute!",
                                   ephemeral=True)
@@ -48,7 +51,7 @@ class Mod(interactions.Extension):
                                       color=BRANDING_COLOUR
                                   ))
         await target.ban(guild_id=int(ctx.guild_id),
-                         reason=f"{current_time()} Banned by {ctx.author.user.username}#{ctx.author.user.discriminator} ({ctx.author.id}). Reason: {reason or 'null'}",
+                         reason=generate_audit_reason(ctx, "Banned", reason),
                          delete_message_days=delete_message_days)
         await ctx.send(embeds=interactions.Embed(
             title=f"Banned {target.user.username}#{target.user.discriminator}",
@@ -92,7 +95,7 @@ class Mod(interactions.Extension):
                                       color=BRANDING_COLOUR
                                   ))
         await target.ban(guild_id=int(ctx.guild_id),
-                         reason=f"{current_time()} Kicked by {ctx.author.user.username}#{ctx.author.user.discriminator} ({ctx.author.id}). Reason: {reason or 'null'}")
+                         reason=generate_audit_reason(ctx, "Kicked", reason))
         await ctx.send(embeds=interactions.Embed(
             title=f"Kicked {target.user.username}#{target.user.discriminator}",
             description=f"Moderator: {ctx.author.user.username}#{ctx.author.user.discriminator} `{ctx.author.id}` \nTarget ID: `{target.id}`",
@@ -114,11 +117,18 @@ class Mod(interactions.Extension):
                                         interactions.Option(
                                             type=interactions.OptionType.INTEGER,
                                             name="duration",
-                                            description="How long the user will be timed out. Defaults to 'indefinite'",
+                                            description="How long the user will be timed out. Examples: ['1y', '365d', '31.536.000']. Defaults to 5 minutes",
+                                            required=False
+                                        ),
+                                        interactions.Option(
+                                            type=interactions.OptionType.STRING,
+                                            name="reason",
+                                            description="Reason for the mute. This is the reason that'll show up in the Audit Log. Defaults to null",
                                             required=False
                                         )
                                     ])
-    async def i_mod_mute(self, ctx: interactions.CommandContext, target: interactions.Member, duration):
+    async def i_mod_mute(self, ctx: interactions.CommandContext, target: interactions.Member, duration: str = "5m",
+                         reason: str = None):
         if int(ctx.guild_id) != 749015533310967828:
             return await ctx.send("Nope! This experiment hasn't been rolled out to your server yet. Wait a minute!",
                                   ephemeral=True)
@@ -133,8 +143,9 @@ class Mod(interactions.Extension):
                                       ),
                                       color=BRANDING_COLOUR
                                   ))
-        await ctx.author.modify(int(ctx.guild_id),
-                                communication_disabled_until={})
+        await target.modify(int(ctx.guild_id),
+                            communication_disabled_until={},
+                            reason=generate_audit_reason(ctx, "Timed out", reason))
 
 
 # TODO; Figure out how to [minutes, hours, days] = communication_disabled_until

@@ -1,3 +1,5 @@
+import interactions
+
 from datetime import datetime
 from utils.constants import CHAN_TYPES, PERMS_DICT
 
@@ -117,6 +119,10 @@ def misc_get_chan_type(t):
     :rtype: str
     """
     return CHAN_TYPES.get(t)
+
+
+def generate_audit_reason(ctx: interactions.CommandContext, action: str, reason: str):
+    return f"{current_time()} {action} by {ctx.author.user.username}#{ctx.author.user.discriminator} ({ctx.author.id}). Reason: {reason or 'null'}"
 
 
 def bot_has_perm(bot_permissions, permission):

@@ -129,7 +129,7 @@ class Misc(interactions.Extension):
                 ),
                 interactions.EmbedField(
                     name=f"Roles: {len(user.roles)}",
-                    value=f"{''.join([f'<@&{role}>' for role in user.roles]) if len(user.roles) != 0 else '** **'}",
+                    value=f"{', '.join([f'<@&{role}>' for role in user.roles]) if len(user.roles) != 0 else '** **'}",
                     inline=True
                 ),
                 interactions.EmbedField(

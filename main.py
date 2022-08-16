@@ -1,11 +1,10 @@
 import interactions
-import logging
+# import logging
 
 from utils.funcs import current_time
 from utils.constants import BOT_TOKEN
 from utils.cache import cache
 
-counter = 0
 # logging.basicConfig(level=logging.DEBUG)
 presence = interactions.ClientPresence(
     activities=[
@@ -17,6 +16,8 @@ presence = interactions.ClientPresence(
 client = interactions.Client(token=BOT_TOKEN,
                              disable_sync=False,
                              _presence=presence)
+
+counter = 0
 
 
 @client.event()
@@ -43,5 +44,4 @@ client.load("cogs.events")
 client.load("cogs.fun")
 client.load("cogs.info")
 client.load("cogs.misc")
-client.load("cogs.mod")
 client.start()

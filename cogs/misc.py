@@ -103,7 +103,7 @@ class Misc(interactions.Extension):
         return await ctx.send(embeds=embed)
 
     @interactions.extension_command(name="whois",
-                                    description="Shows some info on a member. Doesn't support IDs yet.",
+                                    description="Shows some info on a member.",
                                     options=[
                                         interactions.Option(
                                             type=interactions.OptionType.USER,

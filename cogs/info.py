@@ -50,7 +50,8 @@ class Info(interactions.Extension):
                                 name="Arguments",
                                 value="`user`: A user or a user ID"
                             )
-                        ]
+                        ],
+                        color=BRANDING_COLOUR
                     ))
                 case "emoji":
                     return await ctx.send(embeds=interactions.Embed(
@@ -61,7 +62,8 @@ class Info(interactions.Extension):
                                 name="Arguments",
                                 value="`N/A`"
                             )
-                        ]
+                        ],
+                        color=BRANDING_COLOUR
                     ))
                 case "flip-coin":
                     return await ctx.send(embeds=interactions.Embed(
@@ -72,7 +74,8 @@ class Info(interactions.Extension):
                                 name="Arguments",
                                 value="`heads`: Optional value for heads. Defaults to \"heads\"\n`tails`: Optional value for tails. Defaults to \"tails\""
                             )
-                        ]
+                        ],
+                        color=BRANDING_COLOUR
                     ))
                 case "info":
                     return await ctx.send(embeds=interactions.Embed(
@@ -83,7 +86,8 @@ class Info(interactions.Extension):
                                 name="Arguments",
                                 value="`command`: The command you want more info on"
                             )
-                        ]
+                        ],
+                        color=BRANDING_COLOUR
                     ))
                 case "invite-info":
                     return await ctx.send(embeds=interactions.Embed(
@@ -94,7 +98,8 @@ class Info(interactions.Extension):
                                 name="Arguments",
                                 value="`invite`: The invite you want to analyze"
                             )
-                        ]
+                        ],
+                        color=BRANDING_COLOUR
                     ))
                 case "ping":
                     return await ctx.send(embeds=interactions.Embed(
@@ -105,7 +110,8 @@ class Info(interactions.Extension):
                                 name="Arguments",
                                 value="`N/A`"
                             )
-                        ]
+                        ],
+                        color=BRANDING_COLOUR
                     ))
                 case "rock-paper-scissors":
                     return await ctx.send(embeds=interactions.Embed(
@@ -116,7 +122,8 @@ class Info(interactions.Extension):
                                 name="Arguments",
                                 value="`choice`: Your choice. Available options = [rock, paper, scissors]"
                             )
-                        ]
+                        ],
+                        color=BRANDING_COLOUR
                     ))
                 case "whois":
                     return await ctx.send(embeds=interactions.Embed(
@@ -127,7 +134,8 @@ class Info(interactions.Extension):
                                 name="Arguments",
                                 value="`user`: User you want to get info from. Defaults to author"
                             )
-                        ]
+                        ],
+                        color=BRANDING_COLOUR
                     ))
 
     @interactions.extension_autocomplete("info", "command")

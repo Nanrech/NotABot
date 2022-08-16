@@ -7,11 +7,8 @@ class Info(interactions.Extension):
     def __init__(self, client):
         self.client = client
         self.info_embed = interactions.Embed(
-            title=f"{self.client.me.name}'s info",
+            title="NotABot's info",
             color=BRANDING_COLOUR,
-            image=interactions.EmbedImageStruct(
-                url="https://http.cat/425"
-            ),
             fields=[
                 interactions.EmbedField(
                     name="General",

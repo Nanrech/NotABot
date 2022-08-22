@@ -16,7 +16,7 @@ class Info(interactions.Extension):
                 ),
                 interactions.EmbedField(
                     name="Commands",
-                    value="`avatar` </avatar:991756664900423715> `emoji` </emoji:991756664900423714> \n`flip-coin` </flip-coin:991756664900423711> `info` </info:992188021736755280> \n`invite-info` </invite-info:991756664900423716> `ping` </ping:991756664900423710> \n`rock-paper-scissors` </rock-paper-scissors:991756664900423712> `whois` </whois:992486435158495273>"
+                    value="`avatar`\n`emoji`\n`flip-coin`\n`info`\n`invite-info`\n`ping`\n`rock-paper-scissors`\n`whois`"
                 ),
                 interactions.EmbedField(
                     name="More info",

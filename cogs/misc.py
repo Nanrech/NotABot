@@ -25,8 +25,9 @@ class Misc(interactions.Extension):
                                         )
                                     ])
     async def i_misc_get_avatar(self, ctx: interactions.CommandContext, user: interactions.Member = None):
-        url = ctx.author.user.avatar_url if user is None else user.user.avatar_url or "https://http.cat/204"
-        await ctx.send(f"{url} ** **")
+        url = ctx.author.user.avatar_url if user is None else user.user.avatar_url or "`null`"
+        s_url = ctx.author.avatar if ctx.author.avatar != ctx.author.user.avatar else "`null`"
+        await ctx.send(f"Profile Picture:\n> {url}\nServer Profile Picture:\n> {s_url}")
 
     @interactions.extension_command(name="emoji",
                                     description="Shows all the emoji in this server",)

@@ -15,7 +15,7 @@ presence = interactions.ClientPresence(
     ])
 client = interactions.Client(token=BOT_TOKEN,
                              disable_sync=False,
-                             _presence=presence)
+                             presence=presence)
 
 counter = 0
 
